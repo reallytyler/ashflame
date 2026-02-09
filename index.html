@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AshFlame Network | Survival & Anarchy</title>
+    
+    <!-- External Assets -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #ff5f1f; /* Neon Orange */
+            --primary-glow: rgba(255, 95, 31, 0.4);
+            --bg-dark: #080808;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --checkmark: url('https://raw.githubusercontent.com/reallytyler/ashflame/refs/heads/main/checkmark.png');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body { background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+
+        /* Mouse Spotlight Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 95, 31, 0.08) 0%, transparent 45%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* NAVIGATION */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 10%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(8, 8, 8, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .brand img { height: 40px; width: auto; }
+
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.85rem; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--primary); }
+
+        .store-btn {
+            background: var(--primary);
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            background: radial-gradient(circle at center, rgba(255, 95, 31, 0.05) 0%, transparent 70%);
+        }
+
+        .hero img.main-logo {
+            width: 180px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px var(--primary-glow));
+        }
+
+        .status-badge {
+            background: rgba(255, 95, 31, 0.1);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 1px solid rgba(255, 95, 31, 0.2);
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #4CAF50;
+            animation: pulse 2s infinite;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 20px;
+            background: linear-gradient(180deg, #fff 30%, #ff5f1f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-main {
+            background: var(--primary);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 12px;
+            font-weight: 800;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 30px var(--primary-glow);
+            font-size: 1.1rem;
+        }
+
+        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 15px 40px var(--primary-glow); }
+
+        /* RULES SECTION */
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title h2 { font-size: 2.5rem; font-weight: 800; }
+        .section-title p { color: var(--text-dim); }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 0 10%;
+            margin-bottom: 100px;
+        }
+
+        .rule-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 30px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .rule-card:hover { border-color: var(--primary); background: rgba(255, 95, 31, 0.02); }
+        .rule-card .number { color: var(--primary); font-weight: 800; font-size: 1.2rem; margin-bottom: 10px; display: block; }
+        .rule-card h3 { margin-bottom: 10px; font-size: 1.1rem; }
+        .rule-card p { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 10px; }
+        .rule-card .punishment { font-size: 0.8rem; font-weight: 700; color: #ef4444; text-transform: uppercase; }
+
+        /* RANKS SECTION */
+        .ranks-container {
+            padding: 100px 10%;
+            background: linear-gradient(to bottom, transparent, rgba(255, 95, 31, 0.03), transparent);
+        }
+
+        .ranks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .rank-card {
+            background: rgba(15, 15, 15, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .rank-card.featured { border-color: var(--primary); transform: scale(1.05); z-index: 2; background: rgba(20, 20, 20, 0.8); }
+        .rank-card h3 { font-size: 1.8rem; margin-bottom: 10px; color: var(--primary); }
+        .rank-card .price { font-size: 2.5rem; font-weight: 800; margin-bottom: 25px; }
+        .rank-card .price span { font-size: 1rem; color: var(--text-dim); }
+
+        .rank-features { text-align: left; list-style: none; margin-bottom: 30px; flex-grow: 1; }
+        .rank-features li {
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-dim);
+        }
+        .rank-features li::before {
+            content: '';
+            width: 16px;
+            height: 16px;
+            background: var(--checkmark);
+            background-size: contain;
+            background-repeat: no-repeat;
+            display: inline-block;
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 80px 10% 40px;
+            text-align: center;
+            background: #050505;
+            border-top: 1px solid var(--border);
+        }
+
+        .copyright { color: var(--text-dim); font-size: 0.8rem; margin-top: 40px; opacity: 0.6; }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .notif {
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--primary); color: white;
+            padding: 15px 30px; border-radius: 12px;
+            font-weight: 700; z-index: 9999;
+            transform: translateY(200%); transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .notif.show { transform: translateY(0); }
+
+        .loader {
+            position: fixed; inset: 0; background: var(--bg-dark);
+            z-index: 99999; display: flex; align-items: center; justify-content: center;
+            transition: 1s ease;
+        }
+        .loader.hidden { opacity: 0; visibility: hidden; }
+        .spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="notif" id="notif">IP Copied! See you in game.</div>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="brand">
+            <img src="https://raw.githubusercontent.com/reallytyler/ashflame/refs/heads/main/9ed6e124c2b8d99b88afafc913f32faf.png" alt="Logo">
+            <span>ASHFLAME</span>
+        </div>
+        <div class="nav-links">
+            <a href="#rules">Rules</a>
+            <a href="#ranks">Store</a>
+            <a href="https://discord.gg/VJAKqwhwK6" target="_blank">Discord</a>
+            <a href="https://store.ashflame.space" target="_blank" class="store-btn">Shop Now</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="status-badge" data-aos="fade-down">
+            <div class="status-dot"></div> <span id="player-count">Checking Status...</span>
+        </div>
+        <img src="https://raw.githubusercontent.com/reallytyler/ashflame/refs/heads/main/9ed6e124c2b8d99b88afafc913f32faf.png" class="main-logo" data-aos="zoom-in">
+        <h1 data-aos="fade-up">ASHFLAME</h1>
+        <p style="max-width: 600px; color: var(--text-dim); margin-bottom: 30px;" data-aos="fade-up" data-aos-delay="100">
+            Survival without compromise. Hardcore mechanics, competitive PvP, and a player-driven economy. Join the network built for the grind.
+        </p>
+        <div data-aos="fade-up" data-aos-delay="200">
+            <button onclick="copyIP()" class="btn-main">
+                <i class='bx bx-play-circle'></i> play.ashflame.space
+            </button>
+        </div>
+    </section>
+
+    <!-- RULES SECTION -->
+    <section id="rules" style="padding: 100px 0;">
+        <div class="section-title" data-aos="fade-up">
+            <h2>Server Rules</h2>
+            <p>Read carefully to avoid being banned.</p>
+        </div>
+        
+        <div class="rules-grid">
+            <div class="rule-card" data-aos="fade-up">
+                <span class="number">01</span>
+                <h3>No Spamming</h3>
+                <p>Repeating text, flooding chat, or command abuse.</p>
+                <div class="punishment">Punishment: 10m Mute</div>
+            </div>
+            <div class="rule-card" data-aos="fade-up" data-aos-delay="50">
+                <span class="number">02</span>
+                <h3>No NSFW</h3>
+                <p>Crude or inappropriate content in public channels.</p>
+                <div class="punishment">Punishment: 1hr Mute</div>
+            </div>
+            <div class="rule-card" data-aos="fade-up" data-aos-delay="100">
+                <span class="number">03</span>
+                <h3>No Auto-Clickers</h3>
+                <p>Using external tools to gain unfair PvP advantages.</p>
+                <div class="punishment">Punishment: 1 Month Ban</div>
+            </div>
+            <div class="rule-card" data-aos="fade-up" data-aos-delay="150">
+                <span class="number">04</span>
+                <h3>No Bad Advertising</h3>
+                <p>Misleading server media or fake maintenance info.</p>
+                <div class="punishment">Punishment: 15 Day Mute</div>
+            </div>
+            <div class="rule-card" data-aos="fade-up" data-aos-delay="200">
+                <span class="number">05</span>
+                <h3>No Duping</h3>
+                <p>Using glitches or machines to duplicate items.</p>
+                <div class="punishment">Punishment: PERMANENT BAN</div>
+            </div>
+            <div class="rule-card" data-aos="fade-up" data-aos-delay="250">
+                <span class="number">06</span>
+                <h3>No Hack Clients</h3>
+                <p>Any form of modified client for cheating.</p>
+                <div class="punishment">Punishment: PERMANENT BAN</div>
+            </div>
+            <div class="rule-card" data-aos="fade-up" data-aos-delay="300">
+                <span class="number">07</span>
+                <h3>No Racial Slurs</h3>
+                <p>Zero tolerance for racism or hate speech.</p>
+                <div class="punishment">Punishment: 5 Day Mute</div>
+            </div>
+            <div class="rule-card" data-aos="fade-up" data-aos-delay="350">
+                <span class="number">08</span>
+                <h3>No Harassment</h3>
+                <p>Toxic behavior toward players or staff members.</p>
+                <div class="punishment">Punishment: 3hr Mute</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RANKS SECTION -->
+    <section id="ranks" class="ranks-container">
+        <div class="section-title" data-aos="fade-up">
+            <h2>Available Ranks</h2>
+            <p>Support the server and get exclusive perks.</p>
+        </div>
+
+        <div class="ranks-grid">
+            <!-- PRIME -->
+            <div class="rank-card" data-aos="fade-up">
+                <h3>Prime</h3>
+                <div class="price">$0.99 <span>/lifetime</span></div>
+                <ul class="rank-features">
+                    <li>8 Homes</li>
+                    <li>10 AH Slots</li>
+                    <li>10 Player Vaults</li>
+                    <li>Custom Chat Prefix</li>
+                    <li>Discord Role</li>
+                    <li>/kit Prime</li>
+                </ul>
+                <a href="https://store.ashflame.space" class="store-btn">Purchase</a>
+            </div>
+
+            <!-- ELITE -->
+            <div class="rank-card" data-aos="fade-up" data-aos-delay="100">
+                <h3>Elite</h3>
+                <div class="price">$2.99 <span>/lifetime</span></div>
+                <ul class="rank-features">
+                    <li>15 Homes & Vaults</li>
+                    <li>15 AH Slots</li>
+                    <li>/ec Access</li>
+                    <li>/skin & /kit Elite</li>
+                    <li>Exclusive Discord Role</li>
+                    <li>Custom Chat Prefix</li>
+                </ul>
+                <a href="https://store.ashflame.space" class="store-btn">Purchase</a>
+            </div>
+
+            <!-- POOKIE -->
+            <div class="rank-card featured" data-aos="fade-up" data-aos-delay="200">
+                <div style="background: var(--primary); color: white; position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); padding: 5px 20px; border-radius: 20px; font-size: 0.7rem; font-weight: 800;">BEST VALUE</div>
+                <h3>Pookie</h3>
+                <div class="price">$9.99 <span>/lifetime</span></div>
+                <ul class="rank-features">
+                    <li>50 Homes & Vaults</li>
+                    <li>50 AH Slots</li>
+                    <li>/ec, /heal, /hat, /sit</li>
+                    <li>/skin & /kit Pookie</li>
+                    <li>Eternal Discord Role</li>
+                    <li>Custom Prefix</li>
+                </ul>
+                <a href="https://store.ashflame.space" class="store-btn">Purchase</a>
+            </div>
+
+            <!-- MYSTIC -->
+            <div class="rank-card" data-aos="fade-up" data-aos-delay="300">
+                <h3>Mystic</h3>
+                <div class="price">$4.99 <span>/lifetime</span></div>
+                <ul class="rank-features">
+                    <li>30 Homes & Vaults</li>
+                    <li>25 AH Slots</li>
+                    <li>/ec Access</li>
+                    <li>/skin, /sit, /hat</li>
+                    <li>/kit Mystic</li>
+                    <li>Mystic Discord Role</li>
+                </ul>
+                <a href="https://store.ashflame.space" class="store-btn">Purchase</a>
+            </div>
+        </div>
+
+        <!-- SPECIAL RANKS -->
+        <div style="margin-top: 50px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;" data-aos="fade-up">
+            <div class="rule-card">
+                <h3>Booster Perks</h3>
+                <p>Get 5 Homes, 10 Vaults, and a Discord role just for boosting our server!</p>
+            </div>
+            <div class="rule-card">
+                <h3>Media Rank</h3>
+                <p>100+ Subs & 200 Avg Views. Unlocks /tpa and exclusive media role.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <img src="https://raw.githubusercontent.com/reallytyler/ashflame/refs/heads/main/9ed6e124c2b8d99b88afafc913f32faf.png" style="height: 60px; margin-bottom: 20px;">
+        <div class="nav-links" style="justify-content: center; margin-bottom: 20px;">
+            <a href="#">Home</a>
+            <a href="#rules">Rules</a>
+            <a href="#ranks">Store</a>
+            <a href="https://discord.gg/VJAKqwhwK6">Discord</a>
+        </div>
+        <p class="copyright">
+            &copy; 2025 AshFlame Network. Not an official Minecraft product. <br>
+            Not affiliated with Mojang Studios.
+        </p>
+    </footer>
+
+    <script>
+        AOS.init({ duration: 1000, once: true });
+
+        // Mouse Spotlight
+        document.addEventListener('mousemove', e => {
+            document.body.style.setProperty('--mouse-x', e.clientX + 'px');
+            document.body.style.setProperty('--mouse-y', e.clientY + 'px');
+        });
+
+        // Copy IP
+        function copyIP() {
+            const domain = "play.ashflame.space";
+            navigator.clipboard.writeText(domain);
+            const notif = document.getElementById('notif');
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 3000);
+        }
+
+        // Fetch Status
+        async function updateStatus() {
+            try {
+                const response = await fetch(`https://api.mcsrvstat.us/3/play.ashflame.space`);
+                const data = await response.json();
+                const countEl = document.getElementById('player-count');
+                if (data.online) {
+                    countEl.innerText = `${data.players.online} Players Online`;
+                } else {
+                    countEl.innerText = "Server Offline";
+                }
+            } catch (e) {
+                document.getElementById('player-count').innerText = "play.ashflame.space";
+            }
+        }
+
+        window.onload = () => {
+            updateStatus();
+            setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1000);
+        };
+        
+        setInterval(updateStatus, 60000);
+    </script>
+</body>
+</html>
